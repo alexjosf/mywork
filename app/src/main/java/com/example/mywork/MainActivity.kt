@@ -16,9 +16,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.DateRange
@@ -45,7 +49,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -65,31 +68,23 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-data class BottomNavItem(val title: String, val icon: ImageVector)
-
 @Composable
 fun Greeting() {
     var selectedItem by remember { mutableIntStateOf(0) }
-    val items = listOf(
-        BottomNavItem("Home", Icons.Default.Home),
-        BottomNavItem("Profile", Icons.Default.DateRange),
-        BottomNavItem("Settings", Icons.Default.Person)
-    )
+    val items = listOf(Icons.Default.Home, Icons.Default.DateRange, Icons.Default.Person)
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .padding()
-            .navigationBarsPadding(),
-        bottomBar = {
+            .navigationBarsPadding(), bottomBar = {
             NavigationBar(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(60.dp),
-                containerColor = Color.White
+                    .height(60.dp), containerColor = Color.White
             ) {
                 items.forEachIndexed { index, item ->
                     NavigationBarItem(
-                        icon = { Icon(imageVector = item.icon, contentDescription = item.title) },
+                        icon = { Icon(imageVector = item, contentDescription = null) },
                         enabled = true,
                         selected = selectedItem == index,
                         onClick = { selectedItem = index },
@@ -103,8 +98,7 @@ fun Greeting() {
                     )
                 }
             }
-        }
-    ) { paddingValues ->
+        }) { paddingValues ->
         when (selectedItem) {
             0 -> HomeScreen(Modifier.padding(paddingValues))
             1 -> ScheduleScreen(Modifier.padding(paddingValues))
@@ -115,108 +109,259 @@ fun Greeting() {
 
 @Composable
 fun HomeScreen(modifier: Modifier) {
-    Text(
-        "Home Screen",
+    Column(
         modifier = modifier
-            .fillMaxSize()
-            .background(Color.Red),
-    )
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Row(
+            modifier = Modifier
+                .background(Color(0xFFecfacf))
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Previous Week"
+            )
+            Text(
+                "22/03/2025 - 28/02/2025",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
+            )
+            Icon(
+                Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "Next Week"
+            )
+        }
+        LazyColumn(
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            item { DayCard("Mon", "22") }
+            item { DayCard("Tue", "23") }
+            item { DayCard("Wed", "24") }
+            item { DayCard("Thu", "25") }
+            item { DayCard("Fri", "26") }
+            item { DayCard("Sat", "27") }
+            item { DayCard("Sun", "28") }
+        }
+    }
+}
+
+@Composable
+fun DayCard(day: String, date: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .background(
+                Color(0xFFecfacf),
+                RoundedCornerShape(16.dp)
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .wrapContentSize()
+        ) {
+            Text(
+                day,
+                modifier = Modifier,
+                color = Color.Black,
+                fontSize = 16.sp,
+            )
+            Text(
+                date,
+                modifier = Modifier,
+                color = Color.Black,
+                fontSize = 16.sp,
+            )
+        }
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column {
+                Text(
+                    "9:00 - 17:00",
+                    modifier = Modifier,
+                    color = Color.Black,
+                    fontSize = 16.sp,
+                )
+                Text(
+                    "HMR Clerk",
+                    modifier = Modifier,
+                    color = Color.Black,
+                    fontSize = 16.sp,
+                )
+            }
+            Text(
+                "8.00 hr",
+                modifier = Modifier,
+                color = Color.Black,
+                fontSize = 16.sp,
+            )
+        }
+    }
 }
 
 @Composable
 fun ScheduleScreen(modifier: Modifier) {
-    Text(
-        "Profile Screen",
+    Column(
         modifier = modifier
-            .fillMaxSize()
-            .background(Color.Blue),
-    )
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Row(
+            modifier = Modifier
+                .background(Color(0xFFecfacf))
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Previous Week"
+            )
+            Text(
+                "22/03/2025 - 28/02/2025",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
+            )
+            Icon(
+                Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "Next Week"
+            )
+        }
+        LazyColumn(
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            item { AllScheduleDayCard("Mon", "22") }
+            item { AllScheduleDayCard("Tue", "23") }
+            item { AllScheduleDayCard("Wed", "24") }
+            item { AllScheduleDayCard("Thu", "25") }
+            item { AllScheduleDayCard("Fri", "26") }
+            item { AllScheduleDayCard("Sat", "27") }
+            item { AllScheduleDayCard("Sun", "28") }
+        }
+    }
+}
 
+@Composable
+fun AllScheduleDayCard(day: String, date: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .background(
+                Color(0xFFecfacf),
+                RoundedCornerShape(16.dp)
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .wrapContentSize()
+        ) {
+            Text(
+                day,
+                modifier = Modifier,
+                color = Color.Black,
+                fontSize = 16.sp,
+            )
+            Text(
+                date,
+                modifier = Modifier,
+                color = Color.Black,
+                fontSize = 16.sp,
+            )
+        }
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column {
+                Text(
+                    "9:00 - 17:00",
+                    modifier = Modifier,
+                    color = Color.Black,
+                    fontSize = 16.sp,
+                )
+                Text(
+                    "HMR Clerk",
+                    modifier = Modifier,
+                    color = Color.Black,
+                    fontSize = 16.sp,
+                )
+            }
+            Text(
+                "8.00 hr",
+                modifier = Modifier,
+                color = Color.Black,
+                fontSize = 16.sp,
+            )
+        }
+    }
 }
 
 @Composable
 fun AccountScreen(modifier: Modifier) {
     Column(
         modifier = modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
+            .fillMaxSize()
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Row (
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth()
-                    .border(1.dp, Color.Black, RoundedCornerShape(16.dp)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ){
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .clip(CircleShape)
-                            .size(30.dp),
-                        painter = painterResource(id = R.drawable.clinkclubhouse),
-                        contentDescription = null,
-                    )
-                    Text("Clink clubhouse")
-                }
-                OrganizationSelectorMenu()
-            }
-                Text(
-                    "PROFILE",
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
+                .border(1.dp, Color.Black, RoundedCornerShape(16.dp)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
                     modifier = Modifier
-                        .padding(8.dp),
-                    color = Color.Black,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
+                        .padding(16.dp)
+                        .clip(CircleShape)
+                        .size(30.dp),
+                    painter = painterResource(id = R.drawable.clinkclubhouse),
+                    contentDescription = null,
                 )
-            Image(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .clip(CircleShape)
-                    .size(100.dp),
-                painter = painterResource(id = R.drawable.dp),
-                contentDescription = null,
-            )
-            Column(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .clip(RoundedCornerShape(32.dp))
-                    .background(Color(0xFFecfacf))
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.Start
-            )
-            {
-                Label("Name:")
-                LabelValue("Alex Joseph")
-                Label("Role:")
-                LabelValue("Clerk")
-                Label("Email:")
-                LabelValue("alex1234@clinkclubhouse.com")
-                Label("Phone number:")
-                LabelValue("+1 437-563-2369")
-                Label("Address:")
-                LabelValue("Unit 54, 60 Street, London, UK")
+                Text("Clink clubhouse")
+            }
+            OrganizationSelectorMenu()
+        }
+        LazyColumn(
+            modifier = Modifier
+                .weight(1f),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            item {
+                DataDetails()
             }
         }
         Button(
             shape = RectangleShape,
             colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                containerColor = Color.Black,
-                contentColor = Color.White
+                containerColor = Color.Black, contentColor = Color.White
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(horizontal = 16.dp)
                 .height(50.dp)
                 .clip(RoundedCornerShape(8.dp)),
-            onClick = { /* Handle click */ }
-        ) {
+            onClick = { /* Handle click */ }) {
             Text(
                 "LOG OUT",
                 fontSize = 16.sp,
@@ -227,88 +372,136 @@ fun AccountScreen(modifier: Modifier) {
 }
 
 @Composable
-fun OrganizationSelectorMenu(){
+fun DataDetails() {
+    Text(
+        "PROFILE",
+        modifier = Modifier.padding(8.dp),
+        color = Color.Black,
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Bold,
+    )
+    Image(
+        modifier = Modifier
+            .padding(8.dp)
+            .clip(CircleShape)
+            .size(100.dp),
+        painter = painterResource(id = R.drawable.dp),
+        contentDescription = null,
+    )
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+            .clip(RoundedCornerShape(32.dp))
+            .background(Color(0xFFecfacf))
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.Start
+    ) {
+        Label("Name:")
+        LabelValue("Alex Joseph")
+        Label("Role:")
+        LabelValue("Clerk")
+        Label("Email:")
+        LabelValue("alex1234@clinkclubhouse.com")
+        Label("Phone number:")
+        LabelValue("+1 437-563-2369")
+        Label("Address:")
+        LabelValue("Unit 54, 60 Street, London, UK")
+    }
+    Row(
+        modifier = Modifier
+            .padding(16.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(Color(0xFFecfacf))
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            "Availability",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.Black,
+        )
+        Icon(
+            Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "ADD"
+        )
+    }
+}
+
+@Composable
+fun OrganizationSelectorMenu() {
     var menuVisible by remember { mutableStateOf(false) }
     IconButton(
-        onClick = { menuVisible = !menuVisible }
-    ) {
+        onClick = { menuVisible = !menuVisible }) {
         Icon(
-            Icons.Default.AddCircle,
-            contentDescription = "ADD"
+            Icons.Default.AddCircle, contentDescription = "ADD"
         )
         DropdownMenu(
-            expanded = menuVisible,
-            onDismissRequest = { menuVisible = false }
-        ) {
-            DropdownMenuItem(
-                text = {
-                    Row (
-                        verticalAlignment = Alignment.CenterVertically
-                    ){
-                        Image(
-                            modifier = Modifier
-                                .padding(end = 8.dp)
-                                .clip(CircleShape)
-                                .size(30.dp),
-                            painter = painterResource(id = R.drawable.clinkclubhouse),
-                            contentDescription = null
-                        )
-                        Text(
-                            "Clink Clubhouse",
-                            modifier = Modifier,
-                            color = Color.Black,)
-                    }
-                },
-                onClick = { /* Do something... */ }
-            )
-            DropdownMenuItem(
-                text = {
-                    Row (
-                        verticalAlignment = Alignment.CenterVertically
-                    ){
-                        Image(
-                            modifier = Modifier
-                                .padding(end = 8.dp)
-                                .clip(CircleShape)
-                                .size(30.dp),
-                            painter = painterResource(id = R.drawable.astrobar),
-                            contentDescription = null
-                        )
-                        Text(
-                            "Astro bar",
-                            modifier = Modifier,
-                            color = Color.Black,)
-                    }
-
-                },
-                onClick = { /* Do something... */ }
-            )
-            DropdownMenuItem(
-                text = { Row (
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ){
+            expanded = menuVisible, onDismissRequest = { menuVisible = false }) {
+            DropdownMenuItem(text = {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .clip(CircleShape)
+                            .size(30.dp),
+                        painter = painterResource(id = R.drawable.clinkclubhouse),
+                        contentDescription = null
+                    )
                     Text(
-                        "Add another account",
-                        modifier = Modifier.padding(end = 8.dp))
-                    Icon(
-                        Icons.Default.Add,
-                        contentDescription = "ADD"
+                        "Clink Clubhouse",
+                        modifier = Modifier,
+                        color = Color.Black,
                     )
                 }
-                },
-                onClick = { /* Do something... */ }
-            )
+            }, onClick = { /* Do something... */ })
+            DropdownMenuItem(text = {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .clip(CircleShape)
+                            .size(30.dp),
+                        painter = painterResource(id = R.drawable.astrobar),
+                        contentDescription = null
+                    )
+                    Text(
+                        "Astro bar",
+                        modifier = Modifier,
+                        color = Color.Black,
+                    )
+                }
+
+            }, onClick = { /* Do something... */ })
+            DropdownMenuItem(text = {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        "Add another account", modifier = Modifier.padding(end = 8.dp)
+                    )
+                    Icon(
+                        Icons.Default.Add, contentDescription = "ADD"
+                    )
+                }
+            }, onClick = { /* Do something... */ })
         }
     }
 
 }
+
 @Composable
 fun Label(name: String) {
     Text(
         name,
-        modifier = Modifier
-            .padding(top = 8.dp),
+        modifier = Modifier.padding(top = 8.dp),
         fontSize = 16.sp,
         fontWeight = FontWeight.Bold,
         color = Color.Black,
@@ -319,8 +512,7 @@ fun Label(name: String) {
 fun LabelValue(name: String) {
     Text(
         name,
-        modifier = Modifier
-            .padding(start = 16.dp),
+        modifier = Modifier.padding(start = 16.dp),
         fontSize = 16.sp,
         color = Color.Black,
     )
@@ -332,10 +524,9 @@ fun GreetingPreview() {
     MyworkTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             Column(
-                modifier = Modifier
-                    .padding(innerPadding)
+                modifier = Modifier.padding(innerPadding)
             ) {
-                AccountScreen(Modifier.padding(innerPadding))
+                HomeScreen(Modifier.padding(innerPadding))
             }
         }
     }
