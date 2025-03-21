@@ -215,7 +215,7 @@ fun ScheduleScreen(modifier: Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.Start,
     ) {
         Row(
             modifier = Modifier
@@ -238,78 +238,100 @@ fun ScheduleScreen(modifier: Modifier) {
                 Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "Next Week"
             )
         }
-        LazyColumn(
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Column (
+            modifier = Modifier
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            item { AllScheduleDayCard("Mon", "22") }
-            item { AllScheduleDayCard("Tue", "23") }
-            item { AllScheduleDayCard("Wed", "24") }
-            item { AllScheduleDayCard("Thu", "25") }
-            item { AllScheduleDayCard("Fri", "26") }
-            item { AllScheduleDayCard("Sat", "27") }
-            item { AllScheduleDayCard("Sun", "28") }
+
+            NameCard("Alex Joseph")
+            ShiftView("9:00 - 17:00", "HMR Clerk", "Mon", "22")
+            ShiftView("9:00 - 17:00", "HMR Clerk", "Tue", "23")
+            ShiftView("9:00 - 17:00", "HMR Clerk", "Wed", "24")
+            ShiftView("9:00 - 17:00", "HMR Clerk", "Thu", "25")
+            ShiftView("9:00 - 17:00", "HMR Clerk", "Fri", "26")
+            ShiftView("9:00 - 17:00", "HMR Clerk", "Sat", "27")
+            ShiftView("9:00 - 17:00", "HMR Clerk", "Sun", "28")
         }
     }
 }
 
 @Composable
-fun AllScheduleDayCard(day: String, date: String) {
+fun ShiftView(time: String, position: String, day: String, date: String){
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-            .background(
-                Color(0xFFecfacf),
-                RoundedCornerShape(16.dp)
-            ),
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
+    ){
+        DayDateCard(day, date)
+        ShiftCard(time, position)
+    }
+}
+
+@Composable
+fun NameCard(name: String) {
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .background(Color(0xFFecfacf))
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .wrapContentSize()
-        ) {
-            Text(
-                day,
-                modifier = Modifier,
-                color = Color.Black,
-                fontSize = 16.sp,
-            )
-            Text(
-                date,
-                modifier = Modifier,
-                color = Color.Black,
-                fontSize = 16.sp,
-            )
-        }
-        Row(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column {
-                Text(
-                    "9:00 - 17:00",
-                    modifier = Modifier,
-                    color = Color.Black,
-                    fontSize = 16.sp,
-                )
-                Text(
-                    "HMR Clerk",
-                    modifier = Modifier,
-                    color = Color.Black,
-                    fontSize = 16.sp,
-                )
-            }
-            Text(
-                "8.00 hr",
-                modifier = Modifier,
-                color = Color.Black,
-                fontSize = 16.sp,
-            )
-        }
+        Text(
+            name,
+            modifier = Modifier,
+            color = Color.Black,
+            fontSize = 16.sp,
+        )
+    }
+}
+
+@Composable
+fun ShiftCard(time: String, position: String){
+    Column (
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .background(Color(0xFFecfacf))
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+        Text(
+            time,
+            modifier = Modifier,
+            color = Color.Black,
+            fontSize = 16.sp,
+        )
+        Text(
+            position,
+            modifier = Modifier,
+            color = Color.Black,
+            fontSize = 16.sp,
+        )
+    }
+}
+
+@Composable
+fun DayDateCard(day: String, date: String) {
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .background(Color(0xFFecfacf))
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            day,
+            modifier = Modifier,
+            color = Color.Black,
+            fontSize = 16.sp,
+        )
+        Text(
+            date,
+            modifier = Modifier,
+            color = Color.Black,
+            fontSize = 16.sp,
+        )
     }
 }
 
@@ -526,7 +548,7 @@ fun GreetingPreview() {
             Column(
                 modifier = Modifier.padding(innerPadding)
             ) {
-                HomeScreen(Modifier.padding(innerPadding))
+                ScheduleScreen(Modifier.padding(innerPadding))
             }
         }
     }
