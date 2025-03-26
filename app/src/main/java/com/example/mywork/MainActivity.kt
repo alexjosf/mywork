@@ -29,10 +29,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.mywork.ui.screens.AccountScreen
+import com.example.mywork.ui.screens.AvailabilityScreen
 import com.example.mywork.ui.screens.LogInScreen
 import com.example.mywork.ui.theme.MyworkTheme
 
@@ -56,13 +58,14 @@ fun MainScreen() {
         startDestination = "logIn",
     ) {
         composable("logIn") { LogInScreen(navController) }
-        composable("bottomBar") { BottomNavigationBar() }
+        composable("bottomBar") { BottomNavigationBar(navController) }
+        composable("availabilityScreen") { AvailabilityScreen(navController) }
     }
 
 }
 
 @Composable
-fun BottomNavigationBar() {
+fun BottomNavigationBar(navController: NavHostController) {
     var selectedItem by remember { mutableIntStateOf(0) }
     val items = listOf(Icons.Default.Home, Icons.Default.DateRange, Icons.Default.Person)
 
@@ -94,9 +97,9 @@ fun BottomNavigationBar() {
             }
         }) { paddingValues ->
         when (selectedItem) {
-            0 -> HomeScreen(Modifier.padding(paddingValues))
-            1 -> ScheduleScreen(Modifier.padding(paddingValues))
-            2 -> AccountScreen(Modifier.padding(paddingValues))
+            0 -> HomeScreen(Modifier.padding(paddingValues), navController)
+            1 -> ScheduleScreen(Modifier.padding(paddingValues), navController)
+            2 -> AccountScreen(Modifier.padding(paddingValues), navController)
         }
     }
 }

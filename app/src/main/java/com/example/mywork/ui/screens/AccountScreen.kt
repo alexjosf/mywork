@@ -38,10 +38,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.mywork.R
 
 @Composable
-fun AccountScreen(modifier: Modifier) {
+fun AccountScreen(modifier: Modifier, navController: NavHostController) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -67,7 +68,7 @@ fun AccountScreen(modifier: Modifier) {
                 )
                 Text("Clink clubhouse")
             }
-            OrganizationSelectorMenu()
+            OrganizationSelectorMenu(navController)
         }
         LazyColumn(
             modifier = Modifier
@@ -75,7 +76,7 @@ fun AccountScreen(modifier: Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
-                DataDetails()
+                DataDetails(navController)
             }
         }
         Button(
@@ -99,7 +100,8 @@ fun AccountScreen(modifier: Modifier) {
 }
 
 @Composable
-fun DataDetails() {
+fun DataDetails(navController: NavHostController) {
+
     Text(
         "PROFILE",
         modifier = Modifier.padding(8.dp),
@@ -151,14 +153,16 @@ fun DataDetails() {
             fontWeight = FontWeight.Bold,
             color = Color.Black,
         )
+        IconButton(
+            onClick = { navController.navigate("availabilityScreen") }){
         Icon(
             Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "ADD"
-        )
+        )}
     }
 }
 
 @Composable
-fun OrganizationSelectorMenu() {
+fun OrganizationSelectorMenu(navController: NavHostController) {
     var menuVisible by remember { mutableStateOf(false) }
     IconButton(
         onClick = { menuVisible = !menuVisible }) {
@@ -218,7 +222,7 @@ fun OrganizationSelectorMenu() {
                         Icons.Default.Add, contentDescription = "ADD"
                     )
                 }
-            }, onClick = { /* Do something... */ })
+            }, onClick = {navController.navigate("logIn")})
         }
     }
 

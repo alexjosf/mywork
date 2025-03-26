@@ -34,9 +34,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 
 @Composable
-fun ScheduleScreen(modifier: Modifier) {
+fun ScheduleScreen(modifier: Modifier, navController: NavHostController) {
     Column(
         modifier = modifier
             .fillMaxSize(),
