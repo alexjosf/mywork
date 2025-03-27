@@ -30,7 +30,6 @@ import androidx.navigation.NavHostController
 
 @Composable
 fun SwapScreen( navController: NavHostController) {
-
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -49,14 +48,12 @@ fun SwapScreen( navController: NavHostController) {
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
                 Text(
                     "Select your shift you want swap with",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
                 )
-
             }
             LazyColumn(
                 horizontalAlignment = Alignment.CenterHorizontally,

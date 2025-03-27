@@ -139,16 +139,16 @@ fun DataDetails(navController: NavHostController) {
     }
     Row(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
             .clip(RoundedCornerShape(16.dp))
             .background(Color(0xFFecfacf))
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            "Availability",
+            "Change Availability",
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             color = Color.Black,
@@ -158,6 +158,28 @@ fun DataDetails(navController: NavHostController) {
         Icon(
             Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "ADD"
         )}
+    }
+    Row(
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(Color(0xFFecfacf))
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            "Pending swaps",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.Black,
+        )
+        IconButton(
+            onClick = { navController.navigate("pendingSwaps") }){
+            Icon(
+                Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "ADD"
+            )}
     }
 }
 
