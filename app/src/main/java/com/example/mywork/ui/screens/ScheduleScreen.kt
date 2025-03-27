@@ -35,6 +35,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.mywork.ui.components.NameCard
 
 @Composable
 fun ScheduleScreen(modifier: Modifier, navController: NavHostController) {
@@ -70,13 +71,13 @@ fun ScheduleScreen(modifier: Modifier, navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            AdaptiveGrid()
+            AdaptiveGrid(navController)
         }
     }
 }
 
 @Composable
-fun AdaptiveGrid() {
+fun AdaptiveGrid(navController: NavHostController) {
     val data = listOf(
         listOf(
             "Alice Johnson",
@@ -158,8 +159,13 @@ fun AdaptiveGrid() {
         verticalArrangement = Arrangement.Center
     ) {
         item(span = { GridItemSpan(8) }) {
-            Column(modifier = Modifier
-                .border(1.dp, Color.Black, RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp)),
+            Column(
+                modifier = Modifier
+                    .border(
+                        1.dp,
+                        Color.Black,
+                        RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp)
+                    ),
                 verticalArrangement = Arrangement.Center
             ) {
                 NameCard("Employees")
@@ -173,20 +179,25 @@ fun AdaptiveGrid() {
             }
         }
         item(span = { GridItemSpan(8) }) {
-            Row(modifier = Modifier
-                .border(1.dp, Color.Black, RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp)),
-                verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier
+                    .border(
+                        1.dp,
+                        Color.Black,
+                        RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp)
+                    ),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
 
                 data.forEach { row ->
                     Column {
                         row.forEach { cell ->
                             if (cell == null) {
-                                ShiftCard("", "",0xFFdfe0dc, false)
-                            }
-                            else if (row.first() == cell) {
+                                ShiftCard("", "", 0xFFdfe0dc, false, navController)
+                            } else if (row.first() == cell) {
                                 NameCard(cell)
                             } else {
-                                ShiftCard(cell, "Clerk", 0xFFecfacf)
+                                ShiftCard(cell, "Clerk", 0xFFecfacf, true, navController)
                             }
                         }
                     }
@@ -198,14 +209,20 @@ fun AdaptiveGrid() {
 
 
 @Composable
-fun ShiftCard(time: String, position: String, color: Long, clickable: Boolean = true) {
+fun ShiftCard(
+    time: String,
+    position: String,
+    color: Long,
+    clickable: Boolean,
+    navController: NavHostController
+) {
     var menuVisible by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .padding(8.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(Color(color))
-            .clickable( clickable ,onClick = { menuVisible = !menuVisible })
+            .clickable(clickable, onClick = { menuVisible = !menuVisible })
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .width(100.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -234,7 +251,7 @@ fun ShiftCard(time: String, position: String, color: Long, clickable: Boolean = 
                         color = Color.Black,
                     )
                 }
-            }, onClick = { /* Do something... */ })
+            }, onClick = { navController.navigate("SwapScreen") })
         }
     }
 }
@@ -265,24 +282,3 @@ fun DayDateCard(day: String, date: String) {
     }
 }
 
-@Composable
-fun NameCard(name: String) {
-    Column(
-        modifier = Modifier
-            .padding(8.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .background(Color(0xFFf7ad52))
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-            .width(100.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            name,
-            modifier = Modifier,
-            color = Color.Black,
-            fontSize = 16.sp,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
-    }
-}

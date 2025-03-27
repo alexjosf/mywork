@@ -36,6 +36,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.mywork.ui.screens.AccountScreen
 import com.example.mywork.ui.screens.AvailabilityScreen
 import com.example.mywork.ui.screens.LogInScreen
+import com.example.mywork.ui.screens.SwapScreen
 import com.example.mywork.ui.theme.MyworkTheme
 
 class MainActivity : ComponentActivity() {
@@ -55,11 +56,12 @@ fun MainScreen() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = "logIn",
+        startDestination = "swapScreen",
     ) {
         composable("logIn") { LogInScreen(navController) }
         composable("bottomBar") { BottomNavigationBar(navController) }
         composable("availabilityScreen") { AvailabilityScreen(navController) }
+        composable("swapScreen") { SwapScreen(navController) }
     }
 
 }
