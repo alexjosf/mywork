@@ -65,7 +65,6 @@ fun MainScreen() {
         composable("swapScreen") { SwapScreen(navController) }
         composable("pendingSwaps") { PendingSwaps((navController)) }
     }
-
 }
 
 @Composable
